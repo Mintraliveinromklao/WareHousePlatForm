@@ -1,0 +1,28 @@
+﻿@model UserAccount
+@{
+    ViewData["Title"] = "Login";
+    ViewData["background"] = "bg-image-login";
+}
+
+
+<form asp-action="loginCheck" method="post">
+    <div class="blur text-center row">
+        <div class="col-5 my-auto">
+            <img src="~/IMG/โลโก้บริษัท (สีเขียว).jpg" class="img-fluid rounded-circle">
+        </div>
+        <div class="col-7">
+            <h3 class="mb-5">LOGIN</h3>
+            <label style="width:80px">UserName:</label>
+            <input asp-for="Username" placeholder="UserName" required><br><br>
+            <label style="width:80px">Password:</label>
+            <input type="password" asp-for="Password" placeholder="Password" required><br><br>
+            <button type="submit" class="btn btn-secondary"> login</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        $("#loginHide").hide();
+    </script>
+}

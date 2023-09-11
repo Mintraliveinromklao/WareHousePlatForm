@@ -1,0 +1,88 @@
+﻿@using wareHouse.Services
+@{
+    var name = Context.Session.Get<UserAccount>("UserLogin");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WareHouse</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WareHousePlatForm.styles.css" asp-append-version="true" />
+    <link href="~/lib/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet" />
+    <link href="~/lib/datatable/datatables.css" rel="stylesheet" />
+</head>
+<body class="@ViewData["background"]">
+    @if (name != null)
+    {
+        <header id="loginHide">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+                <div class="container-fluid">
+                    <a class="navbar-brand " asp-area="" asp-controller="Home" asp-action="Index"><img src="~/IMG/โลโก้บริษัท (สีเขียว).jpg" style="width:80px" class="mx-3">wareHouse</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Bound" asp-action="Borrow">ยืมอุปกรณ์</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Bound" asp-action="Return">คืนอุปกรณ์</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="CheckStock">เช็คสต๊อก</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="History">ประวัติการใช้งาน</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="d-flex justify-content-end ">
+                        <div class="my-auto me-2 dropdown" id="EditItem">
+                            <i class="fa-solid fa-gear h4 dropdown-toggle me-4 mt-2" id="dropdownMenuButton1"></i>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="EditItem" asp-action="AddItem">เพิ่มอุปกรณ์เข้าสต๊อก</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="EditItem" asp-action="removeItem">นำอุปกรณ์ออกจากสต๊อก</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown">
+                            <div class="row py-2 border border-2 rounded-pill" id="dropdownMenuButton2">
+                                <div class="col-5 my-auto">
+                                    <img src="~/img/ภาพuser.png" class="img-fluid rounded-circle" style="width:60px; height:auto;" />
+                                </div>
+                                <div class="col-7 my-auto">
+                                    @name.Name
+                                </div>
+                            </div>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="LogOut">LogOut</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    }
+    <div style="margin:0px">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - WareHouse - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/fontawesome-free-6.2.1-web/js/all.js"></script>
+    <script src="~/lib/datatable/datatables.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

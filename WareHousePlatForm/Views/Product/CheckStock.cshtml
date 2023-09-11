@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewData["Title"] = "CheckStock";
+    var check = ViewData["editStock"];
+}
+
+
+<div class="text-center container">
+    <h1 class="m-4">ตรวจสอบข้อมูลของในสโตร์</h1>
+    <div>
+        <table class="table table-bordered" id="product">
+            <thead>
+                <tr>
+                    <th>ชื่ออุปกรณ์</th>
+                    <th>รหัส</th>
+                    <th>หมวดหมู่</th>
+                    <th>จำนวน</th>
+                    <th>จำนวนที่ใช้ได้</th>
+                    <th>ชำรุด</th>
+                    <th>จำนวนทั้งหมดในสต๊อก</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            แจ้งชำรุดเพิ่มเติม
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form asp-controller="Product" asp-action="edit" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">แจ้งชำรุดเพิ่มเติม</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" placeholder="ชื่ออุปกรณ์" id="name" name="name" readonly value="กรุณาเลือกอุปกรณ์ก่อน">
+                            <input type="number" placeholder="จำนวน" id="unit" name="unit" min="1" required/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        if ('@Html.Raw(check)' != '') {
+            alert('@Html.Raw(check)');
+        }
+        var table = $("#product").DataTable({
+            "columnDefs": [
+                { "className": "dt-center", "targets": "_all" }
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: 'Dowload',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    }
+                }
+            ]
+        });
+        $.get("/Product/tableStock", function (data) {
+            table.clear().draw();
+            $.each(data, function (i, item) {
+                table.row.add(data[i]).draw();
+            });
+        });
+
+        $('#product tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            $("#name").val($(this).find('td:first-child').html());
+            $("#unit").attr({
+                "max": $(this).find('td:nth-child(5)').html()
+            });
+        });
+    </script>
+}

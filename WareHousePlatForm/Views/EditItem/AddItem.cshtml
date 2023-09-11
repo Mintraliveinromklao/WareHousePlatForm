@@ -1,0 +1,50 @@
+﻿@model WareHousePlatForm.Data.ImportItem
+@{
+    ViewData["Title"] = "AddItem";
+
+    var tagComment = ViewData["TagComment"] as string;
+}
+
+<form asp-action="AddItemToStock" method="post" enctype="multipart/form-data">
+    <div id="Import" class="text-center container">
+        <p class="m-4 h3">กรอกข้อมูลอุปกรณ์</p>
+        <div class="d-flex justify-content-center">
+            <div>
+                <div class="border border-secondary text-center my-3 me-4 my-auto" style="height:280px;">
+                    <input type="file" class="ms-4" accept="image/png, image/gif, image/jpeg" style="height:280px; padding-top:125px;" id="img" multiple name="files" onchange="preview()">
+                    <img id="photo" class="img-fluid" style="height:280px;">
+                </div>
+            </div>
+
+            <div class="text-start">
+                <input asp-for="Name" class="my-3" type="text" placeholder="ชื่ออุปกรณ์"><br>
+                <input asp-for="Code" class="my-3" type="text" placeholder="รหัสของ"><br>
+                <input asp-for="Category" class="my-3" type="text" placeholder="หมวดหมู่"><br>
+                <input asp-for="Price" class="my-3" type="number" placeholder="ราคา"><br>
+                <input asp-for="Unit" class="my-3" type="number" placeholder="จำนวน"><br>
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-outline-secondary mt-5">บันทึก</button>
+    </div>
+</form>
+
+
+@section Scripts{
+    <script>
+        if ('@Html.Raw(tagComment)' != '-') {
+            alert('@Html.Raw(tagComment)');
+        }
+        $(document).ready(function () {
+            $('#photo').hide();
+            $('#img').show();
+        });
+        function preview() {
+            photo.src = URL.createObjectURL(event.target.files[0]);
+            $('#img').hide();
+            $('#photo').show();
+        }
+    </script>
+}
+
+

@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "History";
+    var historyData = (List<WareHousePlatForm.Models.HistoryProduct>)ViewData["history"];
+    int j = 0;
+}
+
+
+<div class="container">
+    <h1 class="text-center m-4">ประวัติการใช้งาน</h1>
+    <div>
+        <table class="table table-bordered text-center" id="history">
+            <thead>
+                <tr>
+                    <th>ชื่ออุปกรณ์</th>
+                    <th>รหัส</th>
+                    <th>หมวดหมู่</th>
+                    <th>ถุกยืม...ครั้ง</th>
+                    <th>นำของเข้า...ครั้ง</th>
+                    <th>นำของออก...ครั้ง</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in historyData)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Code</td>
+                        <td>@item.Category</td>
+                        <td>
+                            <p>@item.Bound.Count </p>
+
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal1_@item.Name">
+                                รายละเอียด
+                            </button>
+
+                            <div class="modal fade" id="exampleModal1_@item.Name" tabindex="-1" aria-labelledby="exampleModalLabel1_@item.Name" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel1_@item.Name">รายละเอียดการยืม</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @foreach (var i in item.Bound)
+                                            {
+                                                <div class="border border-secondary p-2">
+                                                    <p> ชื่อพนักงาน : @i.UserName</p>
+                                                    <p> ชื่อของ : @i.Name</p>
+                                                    <p> จำนวนที่ยืม : @i.Unit</p>
+                                                    <p> วันที่ยืม : @i.DateBorrow</p>
+                                                    <p> วันที่คืน : @i.DateReturn</p>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p>@item.importItems.Count</p>
+
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2_@item.Name">
+                                รายละเอียด
+                            </button>
+
+                            <div class="modal fade" id="exampleModal2_@item.Name" tabindex="-1" aria-labelledby="exampleModalLabel2_@item.Name" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel2_@item.Name">รายละเอียดนำของเข้า</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @foreach (var i in item.importItems)
+                                            {
+                                                <div class=" border border-secondary p-2">
+                                                    <p> ชื่อพนักงาน : @i.UserName</p>
+                                                    <p> ชื่อของ : @i.Name</p>
+                                                    <p> ราคา : @i.Price</p>
+                                                    <p> วันที่นำเข้า : @i.DateTime</p>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p>@item.exports.Count</p>
+
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal3_@item.Name">
+                                รายละเอียด
+                            </button>
+
+                            <div class="modal fade" id="exampleModal3_@item.Name" tabindex="-1" aria-labelledby="exampleModalLabel3_@item.Name" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel3_@item.Name">รายละเอียดนำของออก</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @foreach (var i in item.exports)
+                                            {
+                                                <div class="border border-secondary p-2">
+                                                    <p> ชื่อพนักงาน : @i.UserName</p>
+                                                    <p> ชื่อของ : @i.Name</p>
+                                                    <p> สาเหตุการนำออก : @i.Cause</p>
+                                                    <p> วันที่นำออก : @i.DateTime</p>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    j++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var table = $("#history").DataTable({
+            "columnDefs": [
+                { "className": "dt-center", "targets": "_all" }
+            ],
+            
+        });
+    </script>
+}

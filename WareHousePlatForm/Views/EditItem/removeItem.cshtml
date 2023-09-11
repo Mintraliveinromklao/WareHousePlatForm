@@ -1,0 +1,72 @@
+﻿@model WareHousePlatForm.Data.ExportHistory
+@{
+    ViewData["Title"] = "removeItem";
+    var product = (List<WareHousePlatForm.Models.ProductRemovePage>)ViewData["product"];
+    var check = ViewData["check"];
+}
+
+<h1 class="text-center m-4">นำอุปกรณ์ออกจากสต๊อค</h1>
+<div class="container d-flex justify-content-between">
+    <div class="">
+        <p class="ms-5">ข้อมูลของในสต๊อค</p>
+        <table class="table table-bordered text-center ms-5" id="stock">
+            <thead>
+                <tr>
+                    <th>ชื่ออุปกรณ์</th>
+                    <th>ของในสต๊อก</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in product)
+                {
+                    <tr>
+                        <td>@item.name</td>
+                        <td>@item.stock</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <form asp-action="RemoveHistory" method="post" class="my-auto me-5">
+        <div class="text-center border border-secondary p-5 me-5">
+            <label>ชื่ออุปกรณ์</label><br>
+            <input type="text" id="name" placeholder="ชื่ออุปกรณ์" asp-for="Name" readonly/><br><br>
+            <label>จำนวน</label><br>
+            <input type="number" placeholder="กรุณาระบุจำนวน" id="Unit" min="1" asp-for="Unit"><br><br>
+            <label>สาเหตุ</label><br>
+            <input type="text" placeholder="กรุณาระบุสาเหตุ" asp-for="Cause" required><br><br>
+            <button type="submit" class="btn btn-outline-secondary">บันทึก</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        if ('@Html.Raw(check)' != '') {
+            alert('@Html.Raw(check)');
+        }
+        var table = $("#stock").DataTable({
+            "pageLength": 5,
+            "lengthChange": false,
+            "searching": false,
+            "columnDefs": [
+                { "className": "dt-center", "targets": "_all" }
+            ]
+        });
+
+        $('#stock tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            $("#name").val($(this).find('td:first-child').html());
+            $("#Unit").val($(this).find('td:nth-child(2)').html());
+            $("#Unit").attr({
+                "max": $(this).find('td:nth-child(2)').html()
+            });
+        });
+    </script>
+}
+

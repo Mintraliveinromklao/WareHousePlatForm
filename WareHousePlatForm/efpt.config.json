@@ -1,0 +1,52 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "warehouseContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Data",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "WareHousePlatForm",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[BoundData]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ExportHistory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ImportItem]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductInformation]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "DESKTOP-791TMU3\\SQLEXPRESS.warehouse",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

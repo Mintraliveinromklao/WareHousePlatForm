@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Return";
+    var check = ViewData["checkReturn"];
+}
+
+
+<div class="container text-center">
+    <h1 class="m-3">คืนอุปกรณ์</h1>
+    <div style="width:700px;" class="m-auto mb-4">
+        <p> คลิกเลือกอุปกรณ์ที่จะทำรายการ</p>
+        <table class="table table-bordered" id="borrow">
+            <thead>
+                <tr>
+                    <th>ชื่ออุปกรณ์</th>
+                    <th>จำนวน</th>
+                    <th>วันที่ยืม</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+            </tbody>
+        </table>
+    </div>
+    <form asp-controller="Bound" asp-action="returnItem" method="get">
+        <div>
+            <input placeholder="ชื่ออุปกรณ์" id="name" name="name" hidden>
+            <input placeholder="จำนวน" class="mb-3" id="Unit" name="Unit" hidden>
+            <button class="btn btn-outline-secondary">บันทึกการคืนอุปกรณ์</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        if ('@Html.Raw(check)' != '') {
+            alert('@Html.Raw(check)');
+        }
+        var table = $("#borrow").DataTable({
+            "columnDefs": [
+                { "className": "dt-center", "targets": "_all" }
+            ]
+        });
+        $.get("/Bound/getTableReturn", function (data) {
+            table.clear().draw();
+            $.each(data, function (i, item) {
+                table.row.add(data[i]).draw();
+            });
+        });
+        $('#borrow tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            $("#name").val($(this).find('td:first-child').html());
+            $("#Unit").val($(this).find('td:nth-child(2)').html());
+        });
+    </script>
+}
+
+

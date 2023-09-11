@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Borrow";
+    var data = ViewData["tool"] as string;
+    var code = ViewData["code"] as string;
+    var unit = (int)ViewData["unit"];
+    var check = ViewData["checkborrow"];
+    int i = 0;
+}
+
+<div class="container text-center">
+    <h1 class="text-center mb-3">ยืมอุปกรณ์</h1>
+    <div class="">
+        <table id="product" class="table table-bodered">
+            <thead>
+                <tr class="text-center">
+                    <th>ชื่อ</th>
+                    <th>รหัส</th>
+                    <th>หมวดหมู่</th>
+                    <th>จำนวน</th>
+                    @*<th>เลือกอุปกรณ์</th>*@
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <form asp-controller="Bound" asp-action="borrowItem" method="get">
+        <div>
+            <label class="mb-1">ชื่ออุปกรณ์</label><br>
+            <input type="text" placeholder="ชื่ออุปกรณ์" class="mb-3" id="name" name="name" value="@data" readonly><br>
+            <label class="mb-1">รหัส</label><br>
+            <input type="text" placeholder="รหัส" class="mb-3" id="code" value="@code" disabled><br>
+            <label class="mb-1">จำนวน</label><br>
+            <input type="number" placeholder="จำนวน" name="unit" class="mb-3" id="maxUnit" min="1" max="@unit" required><br>
+            <button class="btn btn-outline-secondary" type="submit">บันทึกรายการ</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        if ('@Html.Raw(check)' != '') {
+            alert('@Html.Raw(check)');
+        }
+        var table = $("#product").DataTable({
+            "columnDefs": [
+                { "className": "dt-center", "targets": "_all" }
+            ]
+        });
+        $.get("/Bound/TableBorrow", function (data) {
+            table.clear().draw();
+            $.each(data, function (i, item) {
+                table.row.add(data[i]).draw();
+            });
+        });
+        
+        $('#product tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            $("#name").val($(this).find('td:first-child').html());
+            $("#code").val($(this).find('td:nth-child(2)').html());
+            $("#maxUnit").attr({
+                "max": $(this).find('td:nth-child(4)').html()
+            });
+        });
+
+    </script>
+}
+
